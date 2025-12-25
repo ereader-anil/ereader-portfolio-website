@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!doctype html>
 <html>
 <head>
@@ -147,5 +148,34 @@
 
   <script type="module" src="src/main.js"></script>
   <script src="https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js"></script>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ESP32 Control Panel</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+
+<h2>ESP32 Remote Control</h2>
+
+<button onclick="sendCmd('ON')">TURN ON</button>
+<button onclick="sendCmd('OFF')">TURN OFF</button>
+
+<p id="status">Status: Disconnected</p>
+
+<script>
+  const client = mqtt.connect('ws://mqtt.yadavanilkumar.com.np:9001');
+
+  client.on('connect', () => {
+    document.getElementById("status").innerText = "Status: Connected";
+  });
+
+  function sendCmd(cmd) {
+    client.publish('esp32/control', cmd);
+  }
+</script>
+
+>>>>>>> 3de82cd3055e4a4ec86ba912afb5ddf1daafa9fe
 </body>
 </html>
