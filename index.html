@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Station Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Main Application -->
+  <div id="mainApp" class="main-app">
+    <header class="header">
+      <div class="header-left">
+        <h1>🔋 Station Manager</h1>
+        <span class="user-info">Welcome, <span id="currentUser"></span></span>
+      </div>
+      <div class="header-actions">
+        <button id="addStationBtn" class="btn btn-primary">
+          <span class="btn-icon">+</span> Add Station
+        </button>
+        <button id="awsSettingsBtn" class="btn btn-secondary">
+          <span class="btn-icon">⚙️</span> MQTT Settings
+        </button>
+        <button id="logoutBtn" class="btn btn-outline">
+          <span class="btn-icon">🚪</span> Logout
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="content-header">
+        <h2>Charging Stations</h2>
+        <div class="stats">
+          <div class="stat-item">
+            <span class="stat-number" id="totalStations">0</span>
+            <span class="stat-label">Total Stations</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number online-count" id="onlineStations">0</span>
+            <span class="stat-label">Online</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number offline-count" id="offlineStations">0</span>
+            <span class="stat-label">Offline</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="stations" class="stations-grid"></div>
+
+      <!-- Enhanced Log Section -->
+      <div class="logs-section">
+        <div class="logs-header">
+          <h3>Activity Log</h3>
+          <button id="toggleLogsBtn" class="btn btn-sm">
+            <span class="toggle-icon">▼</span> Hide Logs
+          </button>
+        </div>
+        <div id="logsContainer" class="logs-container">
+          <div id="log" class="logs-content"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Station Modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <h2>Add Station</h2>
+      <form id="stationForm">
+        <label>Station ID
+          <input name="stationId" required />
+        </label>
+        <label>Charger ID
+          <input name="chargerId" required />
+        </label>
+        <label>MQTT Topic
+          <input name="mqttTopic" value="stations/{stationId}/charger/{chargerId}/command" required />
+        </label>
+        <label>QoS Level
+          <select name="qos">
+            <option value="0">0 (At most once)</option>
+            <option value="1" selected>1 (At least once)</option>
+            <option value="2">2 (Exactly once)</option>
+          </select>
+        </label>
+        <label>Message (ON)
+          <input name="msgOn" value="ON" required />
+        </label>
+        <label>Message (OFF)
+          <input name="msgOff" value="OFF" required />
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Add</button>
+          <button type="button" id="cancelBtn" class="btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MQTT Settings Modal -->
+  <div id="awsModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>HiveMQ Settings</h2>
+      <form id="awsForm">
+        <label>MQTT Broker URL
+          <input name="broker" value="d0670c8d60cf403dbe0b45f606dd69c3.s1.eu.hivemq.cloud" required />
+        </label>
+        <label>Port
+          <input name="port" value="8884" />
+        </label>
+        <label>Use Secure Connection (WSS)
+          <input name="secure" type="checkbox" checked />
+        </label>
+        <label>Username (optional)
+          <input name="username" value="hivemq.webclient.1766640179751" />
+        </label>
+        <label>Password (optional)
+          <input name="password" value="xE52UL.1g:8TrpeC#t&lt;D" type="password" />
+        </label>
+        <label>Client ID Prefix
+          <input name="clientIdPrefix" placeholder="station-manager" />
+        </label>
+        <label>Keep Alive (seconds)
+          <input name="keepAlive" type="number" placeholder="60" />
+        </label>
+        <label>QoS Level
+          <select name="qos">
+            <option value="0">0 (At most once)</option>
+            <option value="1" selected>1 (At least once)</option>
+            <option value="2">2 (Exactly once)</option>
+          </select>
+        </label>
+        <label>Retain Messages
+          <input name="retain" type="checkbox" />
+        </label>
+        <label>Topic template
+          <input name="topicTemplate" placeholder="stations/{stationId}/charger/{chargerId}/command" />
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn primary">Save</button>
+          <button type="button" id="awsCancelBtn" class="btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+  <script src="https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js"></script>
+</body>
+</html>
